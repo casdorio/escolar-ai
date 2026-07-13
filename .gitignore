@@ -1,0 +1,12 @@
+# Dependências instaladas — nunca versionadas
+/vendor/
+
+# Pacote-biblioteca não fixa lock (quem fixa é cada app consumidor)
+/composer.lock
+
+# Lixo de editor/SO
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+*:Zone.Identifier

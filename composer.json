@@ -1,0 +1,28 @@
+{
+    "name": "escolar/ai",
+    "description": "Núcleo compartilhado de IA do GESTAO ESCOLAR: runner de agentes, anonimização LGPD (D1), cost guard, auditoria ai_calls e resolução de LLM por escola. Consumido por APP, RESPONSALUNO, PROFESSOR-portal e ADMIN.",
+    "type": "library",
+    "license": "proprietary",
+    "require": {
+        "php": "^8.2",
+        "illuminate/support": "^12.0",
+        "illuminate/database": "^12.0"
+    },
+    "suggest": {
+        "laravel/ai": "Necessário para o runner real (LaravelAiAgentRunner). Sem ele, use FakeAgentRunner em testes ou instale para chamadas reais."
+    },
+    "autoload": {
+        "psr-4": {
+            "Escolar\\Ai\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Escolar\\Ai\\AiCoreServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

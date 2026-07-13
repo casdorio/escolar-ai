@@ -1,0 +1,8 @@
+# Normaliza fim-de-linha: LF no repositório (servidor é Linux),
+# independente do SO de quem commita.
+* text=auto eol=lf
+
+# Binários (se houver) — nunca normalizar
+*.png binary
+*.jpg binary
+*.ico binary
