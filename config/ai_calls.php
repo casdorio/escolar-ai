@@ -8,6 +8,13 @@
  * precedência sobre estes defaults via mergeConfigFrom.
  */
 return [
+    // Chave dedicada pra (de/)criptar `school_llm_settings.api_key`
+    // ({@see \Escolar\Ai\Casts\EncryptedCredentialCast}) — IGUAL em todos os
+    // apps que leem essa tabela (ADMIN grava, APP/PROFESSOR-portal/
+    // RESPONSALUNO leem). Gere com `php artisan key:generate --show` (mesmo
+    // formato de APP_KEY) e copie o MESMO valor pro `.env` de cada app.
+    'credentials_key' => env('LLM_CREDENTIALS_KEY'),
+
     'cost_guard' => [
         'enabled' => (bool) env('AI_COST_GUARD_ENABLED', true),
         'default_daily_limit_usd' => (float) env('AI_COST_GUARD_DAILY_LIMIT_USD', 5.0),

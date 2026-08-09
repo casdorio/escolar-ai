@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Escolar\Ai\Models;
 
+use Escolar\Ai\Casts\EncryptedCredentialCast;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,10 +14,9 @@ use Illuminate\Database\Eloquent\Model;
  * Model canônico do pacote. Os apps podem estender (ex.: `App\Models\SchoolLlmSetting`
  * no APP adiciona a relation school()) — mesma tabela, mesmo comportamento.
  *
- * ATENÇÃO cross-app: `api_key` usa cast `encrypted` (APP_KEY). Apps com APP_KEY
- * diferente do app que gravou a chave NÃO conseguem decriptar — o
- * {@see \Escolar\Ai\Support\SchoolLlmConfigResolver} degrada para as credenciais
- * globais do provider nesse caso.
+ * `api_key` usa {@see EncryptedCredentialCast}: chave dedicada
+ * (`LLM_CREDENTIALS_KEY`), igual em todos os apps que leem esta tabela — não
+ * depende da `APP_KEY` de cada app (que normalmente difere entre eles).
  */
 class SchoolLlmSetting extends Model
 {
@@ -42,7 +42,7 @@ class SchoolLlmSetting extends Model
         'daily_cost_limit_usd' => 'decimal:4',
         'use_custom_base_url' => 'boolean',
         'metadata' => 'array',
-        'api_key' => 'encrypted',
+        'api_key' => EncryptedCredentialCast::class,
     ];
 
     /**

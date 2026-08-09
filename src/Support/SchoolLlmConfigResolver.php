@@ -15,9 +15,11 @@ use Illuminate\Support\Facades\Schema;
  * Único lugar para provider/model/chave/URL e limite diário USD, consumido
  * pelas actions de IA de todos os apps via {@see ResolveSchoolLlm}.
  *
- * Cross-app: `api_key` é `encrypted` com o APP_KEY do app que gravou a linha.
- * Se este app não conseguir decriptar, a chave é tratada como ausente (warning
- * no log) e o runner cai nas credenciais globais do provider — nunca quebra.
+ * Cross-app: `api_key` usa {@see \Escolar\Ai\Casts\EncryptedCredentialCast}
+ * (`LLM_CREDENTIALS_KEY`, igual em todos os apps — não é a `APP_KEY` de cada
+ * um). Sem essa env configurada (ou com valor divergente do que gravou a
+ * linha), a chave é tratada como ausente (warning no log) e o runner cai nas
+ * credenciais globais do provider — nunca quebra.
  */
 final class SchoolLlmConfigResolver
 {
@@ -93,9 +95,10 @@ final class SchoolLlmConfigResolver
     }
 
     /**
-     * `api_key` é `encrypted` (APP_KEY do app que gravou). Em outro app, a
-     * decriptação pode falhar — degrada para null (credencial global do
-     * provider) em vez de quebrar a chamada de IA.
+     * `api_key` usa `LLM_CREDENTIALS_KEY` (dedicada, cross-app). Se essa env
+     * não estiver configurada igual neste app, a decriptação falha — degrada
+     * para null (credencial global do provider) em vez de quebrar a chamada
+     * de IA.
      */
     private function safeApiKey(SchoolLlmSetting $row): ?string
     {
