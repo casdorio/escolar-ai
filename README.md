@@ -6,6 +6,7 @@ path repository (`"escolar/ai": "@dev"`).
 
 ## O que vive aqui (namespace `Escolar\Ai`)
 
+
 | Área | Conteúdo |
 |---|---|
 | `Contracts` | `AiAgentRunner`, `AiAgentRunResult` |
