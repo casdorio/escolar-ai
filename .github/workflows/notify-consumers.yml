@@ -1,0 +1,33 @@
+name: 📣 Notificar apps consumidores
+
+# Sempre que este pacote recebe um commit novo em main, dispara um
+# repository_dispatch em cada app que o consome — cada um roda
+# `composer update escolar/ai` sozinho e commita o composer.lock
+# atualizado em develop. Fecha o gap que causava o bug de 19/08 (migration
+# no pacote há dias, nunca chegando em produção porque ninguém lembrava de
+# atualizar o lock manualmente).
+on:
+  push:
+    branches: [main]
+
+jobs:
+  notify:
+    name: 🔔 Disparar sync nos apps
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: 📣 Disparar repository_dispatch
+        env:
+          TOKEN: ${{ secrets.TENANT_MIGRATIONS_TOKEN }}
+        run: |
+          set -euo pipefail
+          PACKAGE="escolar/ai"
+          # projeto-admin não depende deste pacote — não recebe o dispatch.
+          for REPO in app.educaeinste.in prof.educaeinste.in portal.educaeinste.in; do
+            echo "→ Disparando sync em casdorio/${REPO}..."
+            curl -sf -X POST \
+              -H "Authorization: token ${TOKEN}" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/casdorio/${REPO}/dispatches" \
+              -d "{\"event_type\":\"package-updated\",\"client_payload\":{\"package\":\"${PACKAGE}\"}}"
+          done
