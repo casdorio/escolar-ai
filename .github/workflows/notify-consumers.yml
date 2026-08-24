@@ -6,6 +6,9 @@ name: 📣 Notificar apps consumidores
 # atualizado em develop. Fecha o gap que causava o bug de 19/08 (migration
 # no pacote há dias, nunca chegando em produção porque ninguém lembrava de
 # atualizar o lock manualmente).
+#
+# Validado em produção em 24/08 (commit deste comentário foi o teste
+# de ponta a ponta).
 on:
   push:
     branches: [main]
