@@ -5,8 +5,8 @@
     "license": "proprietary",
     "require": {
         "php": "^8.2",
-        "illuminate/support": "^12.0",
-        "illuminate/database": "^12.0"
+        "illuminate/support": "^12.0|^13.0",
+        "illuminate/database": "^12.0|^13.0"
     },
     "suggest": {
         "laravel/ai": "Necessário para o runner real (LaravelAiAgentRunner). Sem ele, use FakeAgentRunner em testes ou instale para chamadas reais."
