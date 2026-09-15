@@ -10,8 +10,8 @@ namespace Escolar\Ai\Privacy;
  *
  * Estratégia (defesa-em-profundidade, prefere super-mascarar a vazar):
  *  1. PII estruturada por regex — pega automaticamente em QUALQUER agente:
- *     e-mail, CNPJ/CPF/CEP formatados, telefone formatado e sequências de
- *     8–14 dígitos (docs/telefones sem formatação).
+ *     e-mail, CNPJ (inclusive alfanumérico)/CPF/CEP formatados, telefone
+ *     formatado e sequências de 8–14 dígitos (docs/telefones sem formatação).
  *  2. Termos conhecidos (nomes de alunos/responsáveis) que o chamador passa em
  *     `sensitive_terms` — casados por palavra inteira, case-insensitive.
  *
@@ -28,7 +28,11 @@ class PiiAnonymizer
      */
     private const PATTERNS = [
         '/[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}/' => 'EMAIL',
-        '/\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}/' => 'CNPJ',
+        // CNPJ alfanumérico (IN RFB 2.229/2024): 12 posições letra/número + 2
+        // DVs numéricos. Sem máscara só entra com letra E número nas 12
+        // primeiras posições (só dígitos já cai em NUM; evita palavra comum).
+        '/\b[0-9A-Za-z]{2}\.[0-9A-Za-z]{3}\.[0-9A-Za-z]{3}\/[0-9A-Za-z]{4}\-\d{2}\b/' => 'CNPJ',
+        '/\b(?=[0-9A-Za-z]{0,11}[A-Za-z])(?=[0-9A-Za-z]{0,11}\d)[0-9A-Za-z]{12}\d{2}\b/' => 'CNPJ',
         '/\d{3}\.\d{3}\.\d{3}\-\d{2}/' => 'CPF',
         '/\d{5}\-\d{3}/' => 'CEP',
         '/\(?\d{2}\)?\s?9?\d{4}\-\d{4}/' => 'TEL',
