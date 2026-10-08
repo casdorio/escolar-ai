@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Schema;
  */
 final class SchoolLlmConfigResolver
 {
-    public function dailyCostLimitUsd(?int $tenantId, ?int $schoolId): float
+    public function dailyCostLimitUsd(int|string|null $tenantId, ?int $schoolId): float
     {
         if ($schoolId !== null && Schema::hasTable('school_llm_settings')) {
             $row = SchoolLlmSetting::query()

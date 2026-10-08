@@ -57,7 +57,7 @@ final readonly class ResolveSchoolLlm
      * Limite diário de custo (USD) — passthrough do resolver, para que os
      * consumidores dependam apenas do gateway (single entry de governança).
      */
-    public function dailyCostLimitUsd(?int $tenantId, ?int $schoolId): float
+    public function dailyCostLimitUsd(int|string|null $tenantId, ?int $schoolId): float
     {
         return $this->resolver->dailyCostLimitUsd($tenantId, $schoolId);
     }

@@ -14,7 +14,8 @@ use DomainException;
 class AiCostLimitExceeded extends DomainException
 {
     public function __construct(
-        public readonly ?int $tenantId,
+        /** Id do tenant: ULID em texto nos apps (aceita int por compatibilidade). */
+        public readonly int|string|null $tenantId,
         public readonly float $usedUsd,
         public readonly float $limitUsd,
         public readonly string $action,
